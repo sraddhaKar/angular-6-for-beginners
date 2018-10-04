@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
-import { trigger, style, transition, animate, keyframes, query, stagger} from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './../data.service';
+import { Observable } from 'rxjs';
+import { trigger, transition, query, style, stagger, animate, keyframes } from '@angular/animations';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'app-posts',
+  templateUrl: './posts.component.html',
+  styleUrls: ['./posts.component.scss'],
+
   animations: [
     trigger('listStagger', [
         transition('*<=>*', [
@@ -30,6 +33,16 @@ import { trigger, style, transition, animate, keyframes, query, stagger} from '@
     ])
 ]
 })
-export class AppComponent {
-  title = 'ng6-proj';
+export class PostsComponent implements OnInit {
+
+    posts$: Object;
+
+  constructor(private _data: DataService) { }
+
+  ngOnInit() {
+      this._data.getPosts().subscribe(
+          _data => this.posts$ = _data
+      );
+  }
+
 }
